@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
   private void OnRotationPressed(int direction)
   {
     var currentRotation = transform.localEulerAngles;
-    m_CurrentOrientation = Mathf.LerpAngle(currentRotation.z, currentRotation.z + (direction * AngularSpeed), Time.fixedDeltaTime);
+    m_CurrentOrientation = Mathf.Lerp(currentRotation.z, currentRotation.z + (direction * AngularSpeed), Time.fixedDeltaTime);
     var newRotation = Quaternion.Euler(currentRotation.x, currentRotation.y, m_CurrentOrientation);
     transform.localRotation = newRotation;
   }
