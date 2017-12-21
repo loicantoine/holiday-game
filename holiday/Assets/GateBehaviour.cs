@@ -5,5 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class GateBehaviour : MonoBehaviour 
 {
-  public GameObject NextGate;
+  public int GateId;
+
+ private void OnTriggerEnter(Collider collision)
+  {
+    RaceManager.Instance.NotifyGateCrossed(GateId);
+  }
 }

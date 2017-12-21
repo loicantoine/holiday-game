@@ -10,6 +10,8 @@ public class RaceParticipantBehaviour : MonoBehaviour
 
   private Image m_ArrowImage;
 
+  private Vector3 m_VectorBuffer1;
+
   public GameObject Arrow;
 
   public float ArrowRadius;
@@ -18,18 +20,12 @@ public class RaceParticipantBehaviour : MonoBehaviour
 
   private void Start()
   {
-    m_NextGate = RaceManager.Instance.FirstGate;
     m_ArrowImage = Arrow.GetComponent<Image>();
   }
 
-  private void OnTriggerEnter(Collider collision)
+  public void SetNextGateTransform(Transform nextGateTransform)
   {
-    var gate = collision.GetComponent<GateBehaviour>();
-
-    if (gate != null && gate.NextGate != null)
-    {
-      m_NextGate = gate.NextGate.transform;
-    }
+    m_NextGate = nextGateTransform;
   }
 
   private void FixedUpdate()
@@ -38,11 +34,14 @@ public class RaceParticipantBehaviour : MonoBehaviour
     {
       var angle = -Vector3.SignedAngle(m_NextGate.localPosition, Vector3.right, Vector3.forward);
 
-      Arrow.transform.localEulerAngles = new Vector3(0, 0, angle);
+      m_VectorBuffer1.Set(0, 0, angle);
+      Arrow.transform.localEulerAngles = m_VectorBuffer1;
 
-      Arrow.transform.localPosition = new Vector3(Mathf.Cos(Mathf.Deg2Rad * angle) * ArrowRadius, Mathf.Sin(Mathf.Deg2Rad * angle) * ArrowRadius, 0);
+      var dist = m_NextGate.localPosition.magnitude;
+      
+      m_VectorBuffer1.Set(Mathf.Cos(Mathf.Deg2Rad * angle) * ArrowRadius, Mathf.Sin(Mathf.Deg2Rad * angle) * ArrowRadius, 0);
 
-      var dist = m_NextGate.position.magnitude;
+      Arrow.transform.localPosition = m_VectorBuffer1;
 
       m_ArrowImage.color = Color.Lerp(Color.red, Color.white, Mathf.Min(dist / MaxDistance, 1));
     }
