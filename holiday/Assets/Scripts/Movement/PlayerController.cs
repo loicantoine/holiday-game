@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Controller : MonoBehaviour 
+public class PlayerController : MonoBehaviour 
 {
   public Vector2 m_CurrentForwardDirection;
 
@@ -31,9 +31,23 @@ public class Controller : MonoBehaviour
 
   private void PhysicsManagement()
   {
-    SeaMaterial.material.mainTextureOffset = Vector2.Lerp(SeaMaterial.material.mainTextureOffset, SeaMaterial.material.mainTextureOffset + m_CurrentForwardDirection, Time.fixedDeltaTime);
 
-    m_CurrentForwardDirection *= Drag;
+    if (m_CurrentForwardDirection.magnitude > 0.1)
+    {
+	    SeaMaterial.material.mainTextureOffset = Vector2.Lerp(SeaMaterial.material.mainTextureOffset, SeaMaterial.material.mainTextureOffset + m_CurrentForwardDirection, Time.fixedDeltaTime);
+
+	    WorldSpaceManager.Instance.NotifyPlayerMovement(m_CurrentForwardDirection * Time.fixedDeltaTime);
+
+      //var newAngle = Vector2.SignedAngle(Vector2.up, m_CurrentForwardDirection);
+
+      //var currentAngle = transform.localEulerAngles.z;
+
+      //Debug.Log("formule = currentangle = " + currentAngle + "  new angle : " + newAngle);
+
+      //transform.Rotate(0, 0, (currentAngle - newAngle) / 100);
+
+	    m_CurrentForwardDirection *= Drag;
+    }
   }
 
   private void InputManagement()
@@ -58,7 +72,7 @@ public class Controller : MonoBehaviour
 
   private void OnLinearMovementPressed(int direction)
   {
-    m_VectorBackField.Set(LinearPower * Mathf.Sin(Mathf.Deg2Rad * m_CurrentOrientation), -LinearPower * Mathf.Cos(Mathf.Deg2Rad * m_CurrentOrientation));
+    m_VectorBackField.Set(-LinearPower * Mathf.Sin(Mathf.Deg2Rad * m_CurrentOrientation), LinearPower * Mathf.Cos(Mathf.Deg2Rad * m_CurrentOrientation));
     m_VectorBackField = m_VectorBackField * direction * Time.fixedDeltaTime;
 
     m_CurrentForwardDirection = m_CurrentForwardDirection + m_VectorBackField;
