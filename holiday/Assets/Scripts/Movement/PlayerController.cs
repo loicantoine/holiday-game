@@ -34,9 +34,9 @@ public class PlayerController : MonoBehaviour
 
     if (m_CurrentForwardDirection.magnitude > 0.1)
     {
-	    SeaMaterial.material.mainTextureOffset = Vector2.Lerp(SeaMaterial.material.mainTextureOffset, SeaMaterial.material.mainTextureOffset + m_CurrentForwardDirection, Time.fixedDeltaTime);
+      SeaMaterial.material.mainTextureOffset = Vector2.Lerp(SeaMaterial.material.mainTextureOffset, SeaMaterial.material.mainTextureOffset + m_CurrentForwardDirection, Time.fixedDeltaTime);
 
-	    WorldSpaceManager.Instance.NotifyPlayerMovement(m_CurrentForwardDirection * Time.fixedDeltaTime);
+      WorldSpaceManager.Instance.NotifyPlayerMovement(m_CurrentForwardDirection * Time.fixedDeltaTime);
 
       //var newAngle = Vector2.SignedAngle(Vector2.up, m_CurrentForwardDirection);
 
@@ -73,9 +73,8 @@ public class PlayerController : MonoBehaviour
   private void OnLinearMovementPressed(int direction)
   {
     m_VectorBackField.Set(-LinearPower * Mathf.Sin(Mathf.Deg2Rad * m_CurrentOrientation), LinearPower * Mathf.Cos(Mathf.Deg2Rad * m_CurrentOrientation));
-    m_VectorBackField = m_VectorBackField * direction * Time.fixedDeltaTime;
 
-    m_CurrentForwardDirection = m_CurrentForwardDirection + m_VectorBackField;
+    m_CurrentForwardDirection = m_CurrentForwardDirection + m_VectorBackField * direction * Time.fixedDeltaTime;
 
     if (m_CurrentForwardDirection.magnitude > MaxSpeed)
     {
