@@ -13,6 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Seed: 123
   MinDistance: 50
-  MaxDistance: 100
-  MaxAngle: 30
+  MaxDistance: 250
+  MaxAngle: 350
   NumberOfLap: 2
