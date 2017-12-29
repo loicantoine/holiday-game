@@ -14,5 +14,7 @@ public class RaceParameters : ScriptableObject
 
   public float MaxAngle;
 
+  public int NumberOfGate;
+
   public int NumberOfLap;
 }

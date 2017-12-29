@@ -8,12 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8094fedc7989e4067b5cd3f37d4bb28a, type: 3}
-  m_Name: RaceParameters
+  m_Script: {fileID: 11500000, guid: b477c5640fac6415eb4685f1b51ca1e6, type: 3}
+  m_Name: Vehicle
   m_EditorClassIdentifier: 
-  Seed: 1
-  MinDistance: 50
-  MaxDistance: 250
-  MaxAngle: 50
-  NumberOfGate: 5
-  NumberOfLap: 1
+  AngularSpeed: 450
+  LinearPower: 4
+  MaxSpeed: 7
+  BoostAngularSpeedFactor: 0.4
+  BrakingFactor: 0.95

@@ -24,10 +24,17 @@ public class WorldSpaceManager : MonoBehaviour
 
   public float ScalingFactor;
 
+  public MeshRenderer SeaMaterial;
+
   public Vector2 TotalDisplacement { get; private set; }
 
   public void NotifyPlayerMovement(Vector2 movement)
   {
     TotalDisplacement -= movement;
+  }
+
+  private void FixedUpdate()
+  {
+    SeaMaterial.material.mainTextureOffset = TotalDisplacement * -1;
   }
 }

@@ -52,8 +52,6 @@ public class RaceManager : MonoBehaviour
 
   public GameObject EndPanel;
 
-  public int NumberOfGate;
-
   public Vector3 CurrentGatePosition;
 
   public RaceParameters RaceParameters;
@@ -68,7 +66,7 @@ public class RaceManager : MonoBehaviour
 
     GateBehaviour previousGate = null;
 
-    for (var i = 0; i < NumberOfGate; i++)
+    for (var i = 0; i < RaceParameters.NumberOfGate; i++)
     {
       var angle = UnityEngine.Random.value * (RaceParameters.MaxAngle * 2) - RaceParameters.MaxAngle;
 
@@ -121,7 +119,7 @@ public class RaceManager : MonoBehaviour
   {
     if (m_CurrentTargetGate == gateId && IsCourseOngoing)
     {
-      m_CurrentTargetGate = (m_CurrentTargetGate + 1) % NumberOfGate;
+      m_CurrentTargetGate = (m_CurrentTargetGate + 1) % RaceParameters.NumberOfGate;
       Player.SetNextGateTransform(m_GateBehaviourDictionary[m_CurrentTargetGate].transform);
       if (m_CurrentTargetGate == 0)
       {
