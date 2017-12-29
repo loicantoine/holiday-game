@@ -40,6 +40,8 @@ public class RaceManager : MonoBehaviour
 
   public RaceParticipantBehaviour Player;
 
+  public GameObject WindArrowIndicator;
+
   public GameObject GateParent;
 
   public GameObject GatePrefab;
@@ -56,6 +58,8 @@ public class RaceManager : MonoBehaviour
 
   public RaceParameters RaceParameters;
 
+  public WindManager WindManager;
+
   public bool IsCourseOngoing { get; private set; }
 
   private void Start()
@@ -63,6 +67,7 @@ public class RaceManager : MonoBehaviour
     EndPanel.SetActive(false);
 
     UnityEngine.Random.InitState(RaceParameters.Seed);
+    WindManager.Seed = RaceParameters.Seed;
 
     GateBehaviour previousGate = null;
 
@@ -104,15 +109,21 @@ public class RaceManager : MonoBehaviour
     Player.SetNextGateTransform(m_GateBehaviourDictionary[0].transform);
 
     IsCourseOngoing = true;
+    ChangeWindCondition();
   }
 
   private void FixedUpdate()
   {
     if (IsCourseOngoing)
     {
-      m_InGameClock += Time.fixedDeltaTime;
-      m_TextList[m_CurrentLap].text = GetTimeFromDouble(m_InGameClock - m_CurrentLapStartTime);
+      UpdateClock();
     }
+  }
+
+  private void UpdateClock()
+  {
+    m_InGameClock += Time.fixedDeltaTime;
+    m_TextList[m_CurrentLap].text = GetTimeFromDouble(m_InGameClock - m_CurrentLapStartTime);
   }
 
   public void NotifyGateCrossed(int gateId)
@@ -121,6 +132,8 @@ public class RaceManager : MonoBehaviour
     {
       m_CurrentTargetGate = (m_CurrentTargetGate + 1) % RaceParameters.NumberOfGate;
       Player.SetNextGateTransform(m_GateBehaviourDictionary[m_CurrentTargetGate].transform);
+      ChangeWindCondition();
+
       if (m_CurrentTargetGate == 0)
       {
         m_CurrentLapStartTime = m_InGameClock;
@@ -133,6 +146,29 @@ public class RaceManager : MonoBehaviour
         }
       }
     }
+  }
+
+  private void ChangeWindCondition()
+  {
+    var angle = -Vector3.SignedAngle(m_GateBehaviourDictionary[m_CurrentTargetGate].transform.localPosition, Vector3.right, Vector3.forward);
+
+    var minAngle = angle - 30;
+
+    if (minAngle < 0)
+    {
+      minAngle += 360;
+    }
+
+    var maxAngle = angle + 30;
+
+    if (maxAngle > 360)
+    {
+      maxAngle -= 360;
+    }
+
+    WindManager.RandomizeWind(minAngle, maxAngle);
+
+    WindArrowIndicator.transform.localEulerAngles = WindManager.GetArrowRotation(WindArrowIndicator.transform.localEulerAngles);
   }
 
   private string GetTimeFromDouble(double time)
