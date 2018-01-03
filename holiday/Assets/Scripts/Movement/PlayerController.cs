@@ -13,8 +13,9 @@ public class PlayerController : MonoBehaviour
   private Vector2 m_CurrentForwardDirection;
 
   private float m_CurrentOrientation;
- 
+
   private Vector2 m_Vector2BackField;
+  private Vector2 m_Vector2BackField2;
 
   private Vector3 m_Vector3BackField;
 
@@ -38,6 +39,8 @@ public class PlayerController : MonoBehaviour
 
   public float CurrentSpeed;
 
+  public WindManager Wind;
+
   [Range(0, 1)]
   public float Drag = 1;
 
@@ -51,6 +54,11 @@ public class PlayerController : MonoBehaviour
 
   private void PhysicsManagement()
   {
+	    m_Vector2BackField.Set(Mathf.Cos(Wind.WindDirection * Mathf.Deg2Rad), Mathf.Sin(Wind.WindDirection * Mathf.Deg2Rad));
+	    m_Vector2BackField2.Set(-Mathf.Sin(m_CurrentOrientation * Mathf.Deg2Rad), Mathf.Cos(m_CurrentOrientation * Mathf.Deg2Rad));
+	    var effectiveWindForce = Mathf.Clamp(Wind.WindForce * Vector2.Dot(m_Vector2BackField2.normalized, m_Vector2BackField.normalized), 0, float.MaxValue);
+      m_CurrentForwardDirection = Vector2.Lerp(m_CurrentForwardDirection, m_Vector2BackField2 * effectiveWindForce, Time.fixedDeltaTime * 0.1f);
+
     if (m_IsBraking)
     {
       {
@@ -58,28 +66,10 @@ public class PlayerController : MonoBehaviour
       }
     }
 
-    /*if (m_IsBoostActive)
-    {
-      SeaMaterial.material.mainTextureOffset = SeaMaterial.material.mainTextureOffset + m_CurrentForwardDirection;
-
-      WorldSpaceManager.Instance.NotifyPlayerMovement(m_CurrentForwardDirection);
-
-      CurrentSpeed = m_CurrentForwardDirection.magnitude;
-    }
-    else */
     if (m_CurrentForwardDirection.magnitude > 0.1)
     {
-      //SeaMaterial.material.mainTextureOffset = Vector2.Lerp(SeaMaterial.material.mainTextureOffset, SeaMaterial.material.mainTextureOffset + m_CurrentForwardDirection, Time.fixedDeltaTime);
-
-      WorldSpaceManager.Instance.NotifyPlayerMovement(m_CurrentForwardDirection * Time.fixedDeltaTime);
-
-      //var newAngle = Vector2.SignedAngle(Vector2.up, m_CurrentForwardDirection);
-
-      //var currentAngle = transform.localEulerAngles.z;
-
-      //Debug.Log("formule = currentangle = " + currentAngle + "  new angle : " + newAngle);
-
-      //transform.Rotate(0, 0, (currentAngle - newAngle) / 100);
+      m_Vector2BackField2.Set(-Mathf.Sin(m_CurrentOrientation * Mathf.Deg2Rad), Mathf.Cos(m_CurrentOrientation * Mathf.Deg2Rad));
+      WorldSpaceManager.Instance.NotifyPlayerMovement(m_Vector2BackField2.normalized * m_CurrentForwardDirection.magnitude * Time.fixedDeltaTime);
 
       CurrentSpeed = m_CurrentForwardDirection.magnitude;
 

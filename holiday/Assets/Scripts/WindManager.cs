@@ -32,6 +32,7 @@ public class WindManager : ScriptableObject
     }
 
     m_WindDirection = Random.Range(minWindAngle, maxWindAngle);
+    Debug.Log("Requesting Wind with minWindAngle = " + minWindAngle + " and maxWindAngle = " + maxWindAngle + " returning with wind direction = " + m_WindDirection);
     m_WindForce = Random.Range(MinWindForce, MaxWindForce);
   }
 

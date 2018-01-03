@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b477c5640fac6415eb4685f1b51ca1e6, type: 3}
   m_Name: Vehicle
   m_EditorClassIdentifier: 
-  AngularSpeed: 450
-  LinearPower: 4
-  MaxSpeed: 7
+  AngularSpeed: 180
+  LinearPower: 0.1
+  MaxSpeed: 1
   BoostAngularSpeedFactor: 0.4
   BrakingFactor: 0.95

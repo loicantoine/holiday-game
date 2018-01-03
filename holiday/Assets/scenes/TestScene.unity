@@ -485,6 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1554150752}
+  WindArrowIndicator: {fileID: 1414727874}
   GateParent: {fileID: 1691363577}
   GatePrefab: {fileID: 1624850725369880, guid: 4a6fa3983a18942a2afe6c2c388aefa9, type: 2}
   FirstGate: {fileID: 0}
@@ -494,6 +495,7 @@ MonoBehaviour:
   EndPanel: {fileID: 1125778477}
   CurrentGatePosition: {x: 0, y: 0, z: 0}
   RaceParameters: {fileID: 11400000, guid: 47f212dbc3b6c4c93ac51d67f9609fd1, type: 2}
+  WindManager: {fileID: 11400000, guid: 0c96928227f2a4bfc8a57c9b38bb12c6, type: 2}
 --- !u!4 &496626197 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4221981669250782, guid: 4a6fa3983a18942a2afe6c2c388aefa9,
@@ -751,6 +753,7 @@ RectTransform:
   - {fileID: 1505741981}
   - {fileID: 1125778478}
   - {fileID: 699320370}
+  - {fileID: 1414727875}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1077,6 +1080,74 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1391470716}
+--- !u!1 &1414727874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1414727875}
+  - component: {fileID: 1414727877}
+  - component: {fileID: 1414727876}
+  m_Layer: 5
+  m_Name: WindArrow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1414727875
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1414727874}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 587871695}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 20, y: 20}
+  m_SizeDelta: {x: 20, y: 10}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1414727876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1414727874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: c7cc28b46083549f9ae5167d6a9843e8, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1414727877
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1414727874}
 --- !u!1 &1423541595
 GameObject:
   m_ObjectHideFlags: 0
@@ -1393,6 +1464,7 @@ MonoBehaviour:
   BoostParameters: {fileID: 11400000, guid: b135a15c2d95a4324a80764854380550, type: 2}
   BoostBarTransform: {fileID: 33629343}
   CurrentSpeed: 0
+  Wind: {fileID: 11400000, guid: 0c96928227f2a4bfc8a57c9b38bb12c6, type: 2}
   Drag: 0.99
 --- !u!65 &1554150751
 BoxCollider:
@@ -1762,7 +1834,7 @@ GameObject:
   - component: {fileID: 1844369574}
   - component: {fileID: 1844369573}
   m_Layer: 5
-  m_Name: Arrow
+  m_Name: PlayerArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

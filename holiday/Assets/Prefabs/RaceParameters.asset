@@ -14,6 +14,6 @@ MonoBehaviour:
   Seed: 1
   MinDistance: 50
   MaxDistance: 250
-  MaxAngle: 50
+  MaxAngle: 359
   NumberOfGate: 5
   NumberOfLap: 1

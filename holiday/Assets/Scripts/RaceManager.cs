@@ -151,20 +151,10 @@ public class RaceManager : MonoBehaviour
   private void ChangeWindCondition()
   {
     var angle = -Vector3.SignedAngle(m_GateBehaviourDictionary[m_CurrentTargetGate].transform.localPosition, Vector3.right, Vector3.forward);
-
+    Debug.Log("Angle = " + angle + " " + m_GateBehaviourDictionary[m_CurrentTargetGate].transform.localPosition);
     var minAngle = angle - 30;
 
-    if (minAngle < 0)
-    {
-      minAngle += 360;
-    }
-
     var maxAngle = angle + 30;
-
-    if (maxAngle > 360)
-    {
-      maxAngle -= 360;
-    }
 
     WindManager.RandomizeWind(minAngle, maxAngle);
 

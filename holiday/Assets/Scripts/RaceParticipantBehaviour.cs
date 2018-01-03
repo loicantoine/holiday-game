@@ -33,7 +33,6 @@ public class RaceParticipantBehaviour : MonoBehaviour
     if (m_NextGate != null)
     {
       var angle = -Vector3.SignedAngle(m_NextGate.localPosition, Vector3.right, Vector3.forward);
-
       m_VectorBuffer1.Set(0, 0, angle);
       Arrow.transform.localEulerAngles = m_VectorBuffer1;
 
