@@ -51,13 +51,18 @@ public class PlayerController : MonoBehaviour
 
     PhysicsManagement();
   }
-
+  public float EffectiveWindForce;
+  public Vector2 lerp;
+  private float Count;
   private void PhysicsManagement()
   {
-	    m_Vector2BackField.Set(Mathf.Cos(Wind.WindDirection * Mathf.Deg2Rad), Mathf.Sin(Wind.WindDirection * Mathf.Deg2Rad));
-	    m_Vector2BackField2.Set(-Mathf.Sin(m_CurrentOrientation * Mathf.Deg2Rad), Mathf.Cos(m_CurrentOrientation * Mathf.Deg2Rad));
-	    var effectiveWindForce = Mathf.Clamp(Wind.WindForce * Vector2.Dot(m_Vector2BackField2.normalized, m_Vector2BackField.normalized), 0, float.MaxValue);
-      m_CurrentForwardDirection = Vector2.Lerp(m_CurrentForwardDirection, m_Vector2BackField2 * effectiveWindForce, Time.fixedDeltaTime * 0.1f);
+    Count += Time.fixedDeltaTime;
+    m_Vector2BackField.Set(Mathf.Cos(Wind.WindDirection * Mathf.Deg2Rad), Mathf.Sin(Wind.WindDirection * Mathf.Deg2Rad));
+    m_Vector2BackField.Normalize();
+	  m_Vector2BackField2.Set(-Mathf.Sin(m_CurrentOrientation * Mathf.Deg2Rad), Mathf.Cos(m_CurrentOrientation * Mathf.Deg2Rad));
+    m_Vector2BackField2.Normalize();
+	  EffectiveWindForce = Mathf.Clamp(Wind.WindForce * Vector2.Dot(m_Vector2BackField2.normalized, m_Vector2BackField.normalized), 0, float.MaxValue);
+    lerp = Vector2.Lerp(m_Vector2BackField * EffectiveWindForce, m_Vector2BackField2 * EffectiveWindForce, Count * Test);
 
     if (m_IsBraking)
     {
@@ -66,17 +71,18 @@ public class PlayerController : MonoBehaviour
       }
     }
 
-    if (m_CurrentForwardDirection.magnitude > 0.1)
+    if (m_CurrentForwardDirection.magnitude > 0.01)
     {
       m_Vector2BackField2.Set(-Mathf.Sin(m_CurrentOrientation * Mathf.Deg2Rad), Mathf.Cos(m_CurrentOrientation * Mathf.Deg2Rad));
-      WorldSpaceManager.Instance.NotifyPlayerMovement(m_Vector2BackField2.normalized * m_CurrentForwardDirection.magnitude * Time.fixedDeltaTime);
+
+      WorldSpaceManager.Instance.NotifyPlayerMovement((m_CurrentForwardDirection + lerp) * Time.fixedDeltaTime);
 
       CurrentSpeed = m_CurrentForwardDirection.magnitude;
 
       m_CurrentForwardDirection *= Drag;
     }
   }
-
+  public float Test;
   private void InputManagement()
   {
     //Debug.Log("Accelerate = " + Input.GetAxis("Accelerate"));
@@ -191,6 +197,7 @@ public class PlayerController : MonoBehaviour
 
   private void OnLinearMovementPressed(int direction)
   {
+    Count = 0;
     m_Vector2BackField.Set(-VehicleParameters.LinearPower * Mathf.Sin(Mathf.Deg2Rad * m_CurrentOrientation), VehicleParameters.LinearPower * Mathf.Cos(Mathf.Deg2Rad * m_CurrentOrientation));
 
     m_CurrentForwardDirection = m_CurrentForwardDirection + m_Vector2BackField * direction * Time.fixedDeltaTime;
@@ -204,6 +211,7 @@ public class PlayerController : MonoBehaviour
 
   private void OnRotationPressed(int direction)
   {
+    Count = 0;
     var currentRotation = transform.localEulerAngles;
     var currentAngularSpeed = (direction * VehicleParameters.AngularSpeed) * (m_IsRotationBoostActive ? VehicleParameters.BoostAngularSpeedFactor : 1);
     m_CurrentOrientation = Mathf.Lerp(currentRotation.z, currentRotation.z + currentAngularSpeed, Time.fixedDeltaTime);
